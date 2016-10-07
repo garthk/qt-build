@@ -3,6 +3,17 @@ FROM ubuntu:trusty
 ARG QT=5.7.0
 ARG QTM=5.7
 ARG QTSHA=90a18e855d23930c8013af7424ea6b60fbf4784aa501ccbe2a3a5d966c2700b1
+ARG VCS_REF
+ARG BUILD_DATE
+
+LABEL org.label-schema.build-date="$BUILD_DATE" \
+      org.label-schema.name="qt-build" \
+      org.label-schema.description="A headless Qt $QTM build environment for Ubuntu" \
+      org.label-schema.url="e.g. https://github.com/garthk/qt-build" \
+      org.label-schema.vcs-ref="$VCS_REF" \
+      org.label-schema.vcs-url="https://github.com/garthk/qt-build.git" \
+      org.label-schema.version="$QT" \
+      org.label-schema.schema-version="1.0"
 
 RUN apt-get update -q && \
     DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \

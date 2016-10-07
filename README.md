@@ -3,6 +3,9 @@
 A headless [Qt] 5.7 build environment for Ubuntu, tested with
 [14.04.4 LTS (Trusty Tahr)][trusty].
 
+[![](https://images.microbadger.com/badges/image/garthk/qt-build.svg)](https://microbadger.com/images/garthk/qt-build "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/garthk/qt-build.svg)](https://microbadger.com/images/garthk/qt-build "Get your own version badge on microbadger.com")
+
 ## Usage
 
 * `docker pull garthk/qt-build:trusty-5.7.0`

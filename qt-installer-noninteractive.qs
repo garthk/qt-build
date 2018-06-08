@@ -1,6 +1,7 @@
 // Emacs mode hint: -*- mode: JavaScript -*-
 // https://bitbucket.org/xiannox/trusty-qt5.7-beta-x64/raw/HEAD/qt-installer-noninteractive.qs
 // https://bitbucket.org/xiannox/trusty-qt5.7-beta-x64
+// modified to depend on envar
 
 function Controller() {
     installer.autoRejectMessageBoxes();
@@ -29,12 +30,22 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 
 Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
-
+    // http://doc.qt.io/qtinstallerframework/scripting-installer.html#environmentVariable-method
+    var QTM = installer.environmentVariable("QTM");
+    var QTCOMPONENTS = installer.environmentVariable("QTCOMPONENTS") || "gcc_64";
+    if (!QTM) {
+        throw new Error("No QTM environment variable set.");
+    }
+    var components = QTCOMPONENTS.split(",").filter(function truthy(x) { return !!x; });
+    var prefix = "qt." + installer.environmentVariable("QTM").replace(/\./g, "") + ".";
     widget.deselectAll();
-    widget.selectComponent("qt.57.gcc_64");
-    // to add more components:
-    // widget.selectComponent("qt.57.qtwebengine");
-
+    console.log("ComponentSelectionPageCallback selecting components:");
+    for (idx=0; idx < components.length; idx++) {
+        var component = prefix + components[idx];
+        console.log('*', component);
+        widget.selectComponent(component);
+    }
+    console.log("Done.");
     gui.clickButton(buttons.NextButton);
 }
 

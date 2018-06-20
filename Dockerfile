@@ -1,5 +1,8 @@
+# This should match the UBUNTU line in Makefile for make:
+ARG UBUNTU=trusty
+
 # Build stage 0: install the Qt installer dependencies
-FROM ubuntu:bionic as installerdeps
+FROM ubuntu:$UBUNTU as installerdeps
 RUN apt-get update -q && \
     DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
         ca-certificates \
@@ -46,7 +49,7 @@ RUN set -euo pipefail \
         # | egrep -v '\[[0-9]+\] Warning: (Unsupported screen format)|((QPainter|QWidget))' \
 # Build stage 2: copy Qt from the first stage, thus needing fewer packages
 # and leaving less of a mess e.g. the build layer with /tmp/qt/installer.run
-FROM ubuntu:bionic
+FROM ubuntu:$UBUNTU
 
 # WARNING: these arguments below MUST be kept up to date by hand for builds
 # on Docker Hub to work like they did on your machine, AND MUST match between
@@ -61,7 +64,7 @@ ARG BUILD_DATE
 
 LABEL org.label-schema.build-date="$BUILD_DATE" \
       org.label-schema.name="qt-build" \
-      org.label-schema.description="A headless Qt $QTM build environment for Ubuntu" \
+      org.label-schema.description="A headless Qt $QTM build environment for Ubuntu $UBUNTU" \
       org.label-schema.url="e.g. https://github.com/garthk/qt-build" \
       org.label-schema.vcs-ref="$VCS_REF" \
       org.label-schema.vcs-url="https://github.com/garthk/qt-build.git" \

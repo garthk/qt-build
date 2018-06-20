@@ -1,8 +1,8 @@
 # Import envars from the environment file, if present:
 -include .env
 
-# This should match the FROM line in Dockerfile:
-UBUNTU := bionic
+# This should match the ARG UBUNTU line in Dockerfile for Docker Hub:
+UBUNTU := trusty
 
 # These override the ARG lines in Dockerfile. Any with ?= will be
 # overridden by the make environment and then the .env file:
@@ -27,6 +27,7 @@ image: $(QTF) qt-opensource-linux-x64-$(QT).run
 	echo '$(QTSHA)  $(QTRUNFILE)' | sha256sum -c
 	docker build \
 		--tag "$(TAG)" \
+		--build-arg "UBUNTU=$(UBUNTU)" \
 		--build-arg "QT=$(QT)" \
 		--build-arg "QTM=$(QTM)" \
 		--build-arg "QTRUNFILE=$(QTRUNFILE)" \

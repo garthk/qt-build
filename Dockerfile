@@ -5,6 +5,7 @@ ARG QTM=5.7
 ARG QTSHA=fdf6b4fb5ee9ade2dec74ddb5bea9e1738911e7ee333b32766c4f6527d185eb4
 ARG VCS_REF
 ARG BUILD_DATE
+ARG QTRUN_URL=http://download.qt.io/official_releases/qt/${QTM}/${QT}/qt-opensource-linux-x64-${QT}.run
 
 LABEL org.label-schema.build-date="$BUILD_DATE" \
       org.label-schema.name="qt-build" \
@@ -34,7 +35,7 @@ RUN apt-get update -q && \
     && apt-get clean
 
 ADD qt-installer-noninteractive.qs /tmp/qt/script.qs
-ADD http://download.qt.io/official_releases/qt/${QTM}/${QT}/qt-opensource-linux-x64-${QT}.run /tmp/qt/installer.run
+ADD ${QTRUN_URL} /tmp/qt/installer.run
 
 RUN echo "${QTSHA}  /tmp/qt/installer.run" | shasum -a 256 -c \
     && chmod +x /tmp/qt/installer.run \
